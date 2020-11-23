@@ -1,0 +1,55 @@
+{{> nav/nav-block}}
+
+<div id="main-container" class="container">
+  <div class="jumbotron text-center header-wrap" align="center">
+    <p class="lead">Welcome to <strong>Eat Me</strong></p>
+    <hr class="my-4">
+    <div>
+        <ul>
+            <li>
+                <div class="g-signin2" style="display: inline-block" data-onsuccess="onSignIn"></div>
+                <script>
+                    function onSignIn(googleUser) {
+                        const profile = googleUser.getBasicProfile();
+                        console.log('ID: ' + profile.getId());
+                        console.log('Name: ' + profile.getName());
+                        console.log('Image URL: ' + profile.getImageUrl());
+                        console.log('Email: ' + profile.getEmail());
+                        window.location.replace("/dashboard")
+                    }
+                </script>
+            </li>
+
+            {{#if isloggedin}}
+                <li>
+                    <a href="#" onclick="signOut();">Sign out</a>
+                    <script>
+                        function signOut() {
+                            var auth2 = gapi.auth2.getAuthInstance();
+                            auth2.signOut().then(function () {
+                            console.log("User Signed Out")
+                            window.location.replace("/");
+                            });
+                        }
+                    </script>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">My Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="login-modal">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register" data-register={{register}}>Register</a>
+                </li>
+            {{/if}}
+        </ul>
+    </div>
+  </div>
+</div>
+
+{{> modal/login-block}}
